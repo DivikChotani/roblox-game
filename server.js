@@ -42,7 +42,21 @@ const generationConfig = {
 };
 
 async function run(prompt) {
-    
+    try {
+        let name = ""
+        let message = ""
+        console.log(prompt)
+        const match = prompt.match(/^([^,]+),\s*(.*)$/);
+
+        if (match) {
+            name = match[1];
+            message = match[2];
+        
+            console.log("Name:", name);
+            console.log("Message:", message);
+        } else {
+            console.log("No match found.");
+        }
         const model = genai.getGenerativeModel({
             model: "gemini-1.5-flash",
             systemInstruction: "Grading Prompt I will give you a conversation between two characters A and B and the response from a human. Using the values espoused in the Goals section I will give you, grade the human's response out of 10 on how understanding and helpful it is. Do **not** talk about Roblox’s code guidelines or anything related to that. Include a **Grading** section, a **Positive Areas** section, and an **Areas for Improvement** section, and do not write anything other than those sections. Keep your response **short** and **concise**. **Do not** write more than 1 sentence in each section. # Goals: Track 2 - Civility: Develop gameplay that promotes empathy, respect, and healthy interactions. Consider how your game can teach players to recognize and respond to bullying, fostering a supportive online environment. Examples: Games that reward acts of sharing, cooperating, empathizing, volunteering, helping. Scenarios that allow players to choose how to respond to bullying situations, or experiences that teach players about the impact of their words and actions.",
@@ -69,9 +83,7 @@ async function run(prompt) {
 }
 
 
-// Hardcoded URLs for the content
-const url1 = "LINK TO CONTENT I'M BASING MY AGENT ON";
-const url2 = "MORE CONTENT";
+
 
 app.post("/", async (req, res) => {
     const prompt = req.body.prompt;
